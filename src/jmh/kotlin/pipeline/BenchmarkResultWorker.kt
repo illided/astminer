@@ -1,4 +1,4 @@
-package cli
+package pipeline
 
 import java.io.File
 
@@ -102,7 +102,8 @@ class BenchmarkResultWorker {
 
 
 fun main() {
-    val benchmarkResultWorker = BenchmarkResultWorker()
+    print("Oh oh")
+    /*val benchmarkResultWorker = BenchmarkResultWorker()
     val results = benchmarkResultWorker.parseCsvFile("src/jmh/benchmarks.csv")
-    benchmarkResultWorker.saveToMarkdown(results, "src/jmh/results.md")
+    benchmarkResultWorker.saveToMarkdown(results, "src/jmh/results.md")*/
 }

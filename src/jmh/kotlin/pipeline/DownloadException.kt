@@ -1,4 +1,4 @@
-package cli
+package pipeline
 
 import java.lang.RuntimeException
 
