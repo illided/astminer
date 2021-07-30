@@ -28,7 +28,10 @@ enum class ParserType {
     Fuzzy,
 
     @SerialName("javaparser")
-    JavaParser
+    JavaParser,
+
+    @SerialName("spoon")
+    Spoon
 }
 
 @Serializable
