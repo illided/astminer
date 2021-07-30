@@ -15,7 +15,7 @@ open class BenchmarksSetup() {
     val simpleProjectResultsPath: String = "$cliPath/build/results/simpleProject"
     val longFilePath: String = "$cliPath/src/jmh/resources/LongJavaFile.java"
     val longFileResultsPath: String = "$cliPath/build/results/LongJavaFile"
-    val bigProjectPath: String = "$cliPath/src/jmh/resources/intellij-community"
+    val bigProjectPath: String = "$cliPath/intellij-community"
     val bigProjectResultsPath: String = "$cliPath/build/results/bigProject"
 
     fun setup() {
