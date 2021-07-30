@@ -53,12 +53,10 @@ object NumberOfNodes : TreeFeature<Int> {
  * Tree feature for computing list of all node tokens from a given tree.
  */
 object Tokens : TreeFeature<List<String>> {
-    override fun compute(tree: Node): List<String> = findTokens(tree, ArrayList())
+    override fun compute(tree: Node): List<String> = findTokens(tree)
 
-    private fun findTokens(node: Node, tokensList: MutableList<String>): List<String> {
-        node.children.forEach { findTokens(it, tokensList) }
-        tokensList.add(node.token)
-        return tokensList
+    private fun findTokens(node: Node): List<String> {
+        return node.preOrderIterator().asSequence().map { it.token }.distinct().toList()
     }
 }
 
@@ -66,12 +64,10 @@ object Tokens : TreeFeature<List<String>> {
  * Tree feature for computing list of all node types from a given tree.
  */
 object NodeTypes : TreeFeature<List<String>> {
-    override fun compute(tree: Node): List<String> = findNodeTypes(tree, ArrayList())
+    override fun compute(tree: Node): List<String> = findNodeTypes(tree)
 
-    private fun findNodeTypes(node: Node, nodeTypesList: MutableList<String>): List<String> {
-        node.children.forEach { findNodeTypes(it, nodeTypesList) }
-        nodeTypesList.add(node.typeLabel)
-        return nodeTypesList
+    private fun findNodeTypes(node: Node): List<String> {
+        return node.preOrderIterator().asSequence().map { it.typeLabel }.distinct().toList()
     }
 }
 
