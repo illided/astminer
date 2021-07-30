@@ -45,17 +45,31 @@ class Pipeline(private val config: PipelineConfig) {
      */
     fun run() {
         for (language in config.parser.languages) {
+            println("Parsing $language")
             val parsingResultFactory = getParsingResultFactory(language, config.parser.name)
 
             val files = getProjectFilesWithExtension(inputDirectory, language.fileExtension)
+            println("${files.size} files retrieved")
+            val statusBar = StatusBar(files.size)
 
             createStorage(language).use { storage ->
                 parsingResultFactory.parseFiles(files) { parseResult ->
+                    statusBar.count()
                     for (labeledResult in branch.process(parseResult)) {
                         storage.store(labeledResult)
                     }
                 }
             }
+        }
+    }
+}
+
+class StatusBar(val numOfFiles: Int) {
+    var numOfProcessedUnits = 0
+    fun count() {
+        numOfProcessedUnits++
+        if (numOfProcessedUnits % 10 == 0) {
+            println("$numOfProcessedUnits / $numOfFiles parsed")
         }
     }
 }

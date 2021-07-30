@@ -9,6 +9,7 @@ import astminer.featureextraction.NodeTypes
 import astminer.featureextraction.NumberOfNodes
 import java.io.File
 import java.io.PrintWriter
+import kotlin.math.floor
 import kotlin.math.log
 
 class TreeFeaturesStorage(override val outputDirectoryPath: String) : Storage {
@@ -16,6 +17,7 @@ class TreeFeaturesStorage(override val outputDirectoryPath: String) : Storage {
     private val branching = mutableListOf<Double>()
     private val depths = mutableListOf<Int>()
     private val allTypes = mutableSetOf<String>()
+    private var numOfUnits = 0
 
     private val statWriter : PrintWriter
     private val statFile : File
@@ -32,13 +34,16 @@ class TreeFeaturesStorage(override val outputDirectoryPath: String) : Storage {
         depths.add(Depth.compute(labeledResult.root))
         allTypes.addAll(NodeTypes.compute(labeledResult.root))
         numberOfNodes.add(NumberOfNodes.compute(labeledResult.root))
+        numOfUnits++
     }
 
     override fun close() {
+        statWriter.println("Number of parse results: $numOfUnits")
         evaluateIntFeature(numberOfNodes, "Number of nodes")
         evaluateIntFeature(depths, "Tree depth")
         evaluateDoubleFeature(branching, "Branching factor")
         statWriter.println("Number of unique types: ${allTypes.size}")
+        statWriter.close()
     }
 
     private fun evaluateIntFeature(featureList: List<Int>, featureName: String) {
@@ -48,7 +53,7 @@ class TreeFeaturesStorage(override val outputDirectoryPath: String) : Storage {
     private fun evaluateDoubleFeature(featureList: List<Double>, featureName: String) {
         statWriter.println("$featureName : [min : ${featureList.minOrNull()}, max : ${featureList.maxOrNull()}, avg: ${featureList.average()}]")
         statWriter.println("Distribution:")
-        featureList.groupBy { log(it, 10.0) }.toSortedMap()
+        featureList.groupBy { floor(log(it, 10.0)) }.toSortedMap()
             .map { entry -> "10^${entry.key} - 10^${entry.key + 1} ${entry.value.size}" }
             .map { line -> statWriter.println(line) }
         statWriter.println()

@@ -7,6 +7,7 @@ import astminer.storage.ast.JsonAstStorage
 import astminer.storage.path.Code2SeqPathStorage
 import astminer.storage.path.Code2VecPathStorage
 import astminer.storage.path.PathBasedStorageConfig
+import astminer.storage.statistic.TreeFeaturesStorage
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -80,4 +81,13 @@ data class Code2SeqPathStorageConfig(
 
     override fun createStorage(outputDirectoryPath: String) =
         Code2SeqPathStorage(outputDirectoryPath, pathBasedStorageConfig, nodesToNumber)
+}
+
+
+@Serializable
+@SerialName("statistic")
+class StatisticConfig: StorageConfig() {
+    override fun createStorage(outputDirectoryPath: String): Storage =
+        TreeFeaturesStorage(outputDirectoryPath)
+
 }
